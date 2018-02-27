@@ -12,6 +12,10 @@ public class Addition {
     }
 
     public double Sum() {
+        return Sum(this.numbers);
+    }
+
+    public double Sum(double[] numbers) {
         if(numbers == null) {
             return 0;
         }
