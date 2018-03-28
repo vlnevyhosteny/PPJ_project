@@ -1,4 +1,4 @@
-package mathematics;
+package ppj.weather.mathematics;
 
 public class Addition {
 
