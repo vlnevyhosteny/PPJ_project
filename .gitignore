@@ -77,3 +77,4 @@ fabric.properties
 # Maven
 log/
 target/
+*.out

@@ -11,7 +11,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         SpringApplication app = new SpringApplication(Main.class);
-        app.setAdditionalProfiles("devel");
 
         ApplicationContext ctx = app.run(args);
 
