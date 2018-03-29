@@ -3,10 +3,19 @@ package ppj.weather;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import ppj.weather.configs.AppConfiguration;
+import ppj.weather.provisioning.Provisioner;
 
 @SpringBootApplication
 public class Main {
+
+    @Profile({"devel"})
+    @Bean(initMethod = "doProvision")
+    public Provisioner provisioner() {
+        return new Provisioner();
+    }
 
     public static void main(String[] args) throws Exception {
 
