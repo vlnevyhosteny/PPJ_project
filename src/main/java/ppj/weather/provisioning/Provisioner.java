@@ -3,6 +3,7 @@ package ppj.weather.provisioning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -21,6 +22,9 @@ public class Provisioner {
 
     @Autowired
     private DataSource dataSource;
+
+    @Value("${provisioner.createScriptClassPath}")
+    private String createScriptClassPath;
 
     public void doProvision() {
 
@@ -44,7 +48,7 @@ public class Provisioner {
     }
 
     public void createDb() {
-        Resource rc = new ClassPathResource("create_tables.hsql");
+        Resource rc = new ClassPathResource(createScriptClassPath);
 
         try {
             ScriptUtils.executeSqlScript(dataSource.getConnection(), rc);
