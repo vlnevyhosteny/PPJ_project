@@ -25,8 +25,7 @@ public class StateDao {
     }
 
     public boolean update(State state) {
-        BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(
-                state);
+        BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(state);
 
         String sql = "UPDATE " + TABLE_NAME + " SET " + NAME_ATTRIBUTE + "=:name WHERE " + ID_ATTRIBUTE + "=:id";
 
@@ -34,8 +33,7 @@ public class StateDao {
     }
 
     public boolean create(State state) {
-        BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(
-                state);
+        BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(state);
 
         String sql = "INSERT INTO " + TABLE_NAME + " (" + NAME_ATTRIBUTE + ") VALUES (:name)";
 
@@ -44,8 +42,7 @@ public class StateDao {
 
     @Transactional
     public int[] create(List<State> states) {
-        SqlParameterSource[] params = SqlParameterSourceUtils
-                .createBatch(states.toArray());
+        SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(states.toArray());
 
         String sql = "INSERT INTO " + TABLE_NAME + " (" + NAME_ATTRIBUTE + ") VALUES (:name)";
 
@@ -53,7 +50,7 @@ public class StateDao {
     }
 
     public boolean delete(int id) {
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+        MapSqlParameterSource params = new MapSqlParameterSource(ID_ATTRIBUTE, id);
 
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE " + ID_ATTRIBUTE + "=:id";
 
@@ -62,7 +59,7 @@ public class StateDao {
 
 
     public State getState(int id) {
-        MapSqlParameterSource params = new MapSqlParameterSource("id", id);
+        MapSqlParameterSource params = new MapSqlParameterSource(ID_ATTRIBUTE, id);
 
         String sql = "SELECT " + ID_ATTRIBUTE + "," + NAME_ATTRIBUTE + " FROM " + TABLE_NAME+ " WHERE "
                 + ID_ATTRIBUTE + "=:id";
