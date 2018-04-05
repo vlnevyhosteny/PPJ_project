@@ -6,14 +6,14 @@ public class City {
 
     private String name;
 
-    private State country;
+    private State state;
 
     private int stateId;
 
-    public City(int id, String name, State country, int stateId) {
+    public City(int id, String name, State state, int stateId) {
         this.id = id;
         this.name = name;
-        this.country = country;
+        this.state = state;
         this.stateId = stateId;
     }
 
@@ -33,12 +33,12 @@ public class City {
         this.name = name;
     }
 
-    public State getCountry() {
-        return country;
+    public State getState() {
+        return state;
     }
 
-    public void setCountry(State country) {
-        this.country = country;
+    public void setState(State state) {
+        this.state = state;
     }
 
     public int getStateId() {
@@ -54,7 +54,7 @@ public class City {
         return "City{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", country=" + country +
+                ", state=" + state +
                 ", stateId=" + stateId +
                 '}';
     }
