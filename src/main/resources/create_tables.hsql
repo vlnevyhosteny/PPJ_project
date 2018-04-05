@@ -20,5 +20,9 @@ ALTER TABLE city ADD FOREIGN KEY (stateId) REFERENCES city (id);
 CREATE INDEX fk_city_state_id ON city (stateId);
 
 /* INSERT DUMMY DATA */
-INSERT INTO state (name)          VALUES ("Czech Republic"),("Germany"),("United Kingdom");
-INSERT INTO city  (name, stateId) VALUES ("Prague", 1), ("Liberec", 1), ("Berlin", 2);
+INSERT INTO state (name)          VALUES ('Czech Republic');
+INSERT INTO state (name)          VALUES ('Germany');
+INSERT INTO state (name)          VALUES ('United Kingdom');
+INSERT INTO city  (name, stateId) VALUES ('Prague', 1);
+INSERT INTO city  (name, stateId) VALUES ('Liberec', 1);
+INSERT INTO city  (name, stateId) VALUES ('Berlin', 2);
