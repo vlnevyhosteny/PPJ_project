@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Profile;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -22,6 +23,7 @@ import ppj.weather.provisioning.Provisioner;
 @SpringBootApplication
 @EnableTransactionManagement
 @EntityScan("ppj.weather.model")
+@ComponentScan(basePackages = {"ppj.weather"})
 public class Main {
 
     @Bean
@@ -53,9 +55,14 @@ public class Main {
         return new Provisioner();
     }
 
+    @Autowired
+    private static StateDao stateDao;
+
     public static void main(String[] args) throws Exception {
 
         SpringApplication app = new SpringApplication(Main.class);
+
+        System.out.println(stateDao.getStates().size());
 
         ApplicationContext ctx = app.run(args);
 
