@@ -1,5 +1,11 @@
 package ppj.weather.model;
 
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.*;
@@ -18,66 +24,58 @@ public class CityDao {
     public static final String STATE_ATTRIBUTE = "stateId";
 
     @Autowired
-    private NamedParameterJdbcOperations jdbc;
+    private SessionFactory sessionFactory;
+
+    public Session session() {
+        return sessionFactory.getCurrentSession();
+    }
 
     public List<City> getCities() {
-        String sql = "SELECT " + ID_ATTRIBUTE + "," + NAME_ATTRIBUTE + "," + STATE_ATTRIBUTE
-                + " FROM " + TABLE_NAME;
+        Criteria criteria = session().createCriteria(City.class);
 
-        return jdbc.query(sql, BeanPropertyRowMapper.newInstance(City.class));
+        criteria.createAlias("city", "c", JoinType.INNER_JOIN)
+                .add(Restrictions.eq("c.enabled", true));
+
+        return criteria.list();
     }
 
-    public boolean update(City city) {
-        BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(city);
-
-        String sql = "UPDATE " + TABLE_NAME + " SET " + NAME_ATTRIBUTE + "=:name , " + STATE_ATTRIBUTE + "=:stateId ,"
-                + " WHERE " + ID_ATTRIBUTE + "=:id";
-
-        return jdbc.update(sql, params) == 1;
+    public void saveOrUpdate(City city) {
+        session().saveOrUpdate(city);
     }
 
-    public boolean create(City city) {
-        BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(city);
+    public void saveOrUpdate(List<City> cities) {
+        Session session = session();
 
-        String sql = "INSERT INTO " + TABLE_NAME + " (" + NAME_ATTRIBUTE + "," + STATE_ATTRIBUTE
-                + ") VALUES (:name, :stateId)";
-
-        return jdbc.update(sql, params) == 1;
-    }
-
-    @Transactional
-    public int[] create(List<City> cities) {
-        SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(cities.toArray());
-
-        String sql = "INSERT INTO " + TABLE_NAME + " (" + NAME_ATTRIBUTE + "," + STATE_ATTRIBUTE
-                + ") VALUES (:name, :stateId)";
-
-        return jdbc.batchUpdate(sql, params);
+        for (City city:
+                cities) {
+            session.saveOrUpdate(city);
+        }
     }
 
     public boolean delete(int id) {
-        MapSqlParameterSource params = new MapSqlParameterSource(ID_ATTRIBUTE, id);
+        Query query = session()
+                .createQuery("DELETE FROM " + TABLE_NAME + " WHERE " + ID_ATTRIBUTE + "=:id");
 
-        String sql = "DELETE FROM " + TABLE_NAME + " WHERE " + ID_ATTRIBUTE + "=:id";
+        query.setLong("id", id);
 
-        return jdbc.update(sql, params) == 1;
+        return query.executeUpdate() == 1;
     }
 
 
     public City getCity(int id) {
-        MapSqlParameterSource params = new MapSqlParameterSource(ID_ATTRIBUTE, id);
+        Criteria crit = session().createCriteria(City.class);
 
-        String sql = "SELECT " + ID_ATTRIBUTE + "," + NAME_ATTRIBUTE + "," + STATE_ATTRIBUTE
-                + " FROM " + TABLE_NAME+ " WHERE " + ID_ATTRIBUTE + "=:id";
+        crit.createAlias("city", "c");
 
-        return jdbc.queryForObject(sql, params, BeanPropertyRowMapper.newInstance(City.class));
+        crit.add(Restrictions.eq("c.enabled", true));
+        crit.add(Restrictions.idEq(id));
+
+        return (City) crit.uniqueResult();
     }
 
 
-    public void deleteStates() {
-        String sql = "DELETE FROM " + TABLE_NAME;
-
-        jdbc.getJdbcOperations().execute(sql);
+    public void deleteOffers() {
+        session().createQuery("delete from " + TABLE_NAME).executeUpdate();
     }
 
 }
