@@ -1,10 +1,21 @@
 package ppj.weather.model;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "States")
 public class State {
 
+    @Id
+    @GeneratedValue
     private int id;
 
+    @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "stateId", cascade = CascadeType.ALL)
+    private List<City> cities;
 
     public State(int id, String name) {
         this.id = id;

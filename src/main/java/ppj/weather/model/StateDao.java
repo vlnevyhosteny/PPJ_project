@@ -1,5 +1,8 @@
 package ppj.weather.model;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.*;
@@ -7,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public class StateDao {
 
     public static final String TABLE_NAME       = "state";
@@ -16,9 +20,17 @@ public class StateDao {
     public static final String NAME_ATTRIBUTE   = "name";
 
     @Autowired
-    private NamedParameterJdbcOperations jdbc;
+    private SessionFactory sessionFactory;
+
+    public Session session() {
+        return sessionFactory.getCurrentSession();
+    }
 
     public List<State> getStates() {
+        Criteria criteria = session().createCriteria(State.class);
+
+        criteria.createAlias("")
+
         String sql = "SELECT " + ID_ATTRIBUTE + "," + NAME_ATTRIBUTE + " FROM " + TABLE_NAME;
 
         return jdbc.query(sql, BeanPropertyRowMapper.newInstance(State.class));

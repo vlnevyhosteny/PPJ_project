@@ -1,20 +1,26 @@
 package ppj.weather.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "cities")
 public class City {
 
+    @Id
+    @GeneratedValue
     private int id;
 
+    @Column(name = "name")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "stateId")
     private State state;
 
-    private int stateId;
-
-    public City(int id, String name, State state, int stateId) {
+    public City(int id, String name, State state) {
         this.id = id;
         this.name = name;
         this.state = state;
-        this.stateId = stateId;
     }
 
     public int getId() {
@@ -41,21 +47,12 @@ public class City {
         this.state = state;
     }
 
-    public int getStateId() {
-        return stateId;
-    }
-
-    public void setStateId(int stateId) {
-        this.stateId = stateId;
-    }
-
     @Override
     public String toString() {
         return "City{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", state=" + state +
-                ", stateId=" + stateId +
                 '}';
     }
 }
