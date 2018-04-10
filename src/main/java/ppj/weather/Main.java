@@ -21,9 +21,9 @@ import ppj.weather.model.StateDao;
 import ppj.weather.provisioning.Provisioner;
 
 @SpringBootApplication
-//@EnableTransactionManagement
-//@EntityScan("ppj.weather.model")
-//@ComponentScan(basePackages = {"ppj.weather"})
+@EnableTransactionManagement
+@EntityScan("ppj.weather.model")
+@ComponentScan(basePackages = {"ppj.weather"})
 public class Main {
 
     @Bean
@@ -62,7 +62,7 @@ public class Main {
 
         SpringApplication app = new SpringApplication(Main.class);
 
-        //System.out.println(stateDao.getStates().size());
+        System.out.println(stateDao.getStates().size());
 
         ApplicationContext ctx = app.run(args);
 
