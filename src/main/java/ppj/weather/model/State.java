@@ -14,7 +14,7 @@ public class State {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "stateId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<City> cities;
 
     public State(int id, String name) {

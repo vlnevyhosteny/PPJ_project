@@ -14,7 +14,7 @@ public class City {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "stateId")
+    @JoinColumn(name = "id", insertable=false, updatable=false)
     private State state;
 
     public City(int id, String name, State state) {

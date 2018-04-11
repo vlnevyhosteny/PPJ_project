@@ -1,6 +1,6 @@
 package ppj.weather.configs;
 
-import com.sun.istack.internal.NotNull;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;

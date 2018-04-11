@@ -62,7 +62,7 @@ public class Main {
 
         SpringApplication app = new SpringApplication(Main.class);
 
-        System.out.println(stateDao.getStates().size());
+        //System.out.println(stateDao.getStates().size());
 
         ApplicationContext ctx = app.run(args);
 
