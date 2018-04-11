@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public class CityDAO {
+public class CityDao {
 
     public static final String TABLE_NAME = "city";
 
