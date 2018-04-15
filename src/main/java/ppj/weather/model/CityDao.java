@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 public class CityDao {
@@ -24,10 +25,10 @@ public class CityDao {
     public static final String STATE_ATTRIBUTE = "stateId";
 
     @Autowired
-    private SessionFactory sessionFactory;
+    public EntityManagerFactory entityManagerFactory;
 
     public Session session() {
-        return sessionFactory.getCurrentSession();
+        return entityManagerFactory.unwrap(SessionFactory.class).getCurrentSession();
     }
 
     public List<City> getCities() {

@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 @Transactional
@@ -22,10 +23,10 @@ public class StateDao {
     public static final String NAME_ATTRIBUTE   = "name";
 
     @Autowired
-    private SessionFactory sessionFactory;
+    public EntityManagerFactory entityManagerFactory;
 
     public Session session() {
-        return sessionFactory.getCurrentSession();
+        return entityManagerFactory.unwrap(SessionFactory.class).getCurrentSession();
     }
 
     public List<State> getStates() {
