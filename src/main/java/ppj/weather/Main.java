@@ -14,10 +14,6 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import ppj.weather.model.CityDao;
-import ppj.weather.model.StateDao;
-import ppj.weather.provisioning.Provisioner;
-
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
