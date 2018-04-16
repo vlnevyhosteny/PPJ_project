@@ -38,11 +38,6 @@ public class StateServiceTest {
     }
 
     @Test
-    public void getStateService() {
-        Assert.assertTrue(stateService != null);
-    }
-
-    @Test
     public void testCreateRetrieve() {
         stateService.create(state1);
 
@@ -50,10 +45,10 @@ public class StateServiceTest {
 
         System.out.println(states1);
 
-        assertEquals("One user should have been created and retrieved", 1, states1.size());
+        assertEquals("One state should have been created and retrieved", 1, states1.size());
 
         State retrieved1 = states1.get(0);
-        assertEquals("Inserted user should match retrieved", state1.toString(), retrieved1.toString());
+        assertEquals("Inserted state should match retrieved", state1.toString(), retrieved1.toString());
 
         stateService.create(state2);
         stateService.create(state3);
@@ -61,7 +56,18 @@ public class StateServiceTest {
 
         List<State> states2 = stateService.getAllStates();
 
-        assertEquals("Should be four retrieved users.", 4, states2.size());
+        assertEquals("Should be four retrieved states.", 4, states2.size());
+    }
+
+    @Test
+    public void testDeleteAll()
+    {
+        stateService.create(state2);
+        stateService.create(state3);
+        stateService.create(state4);
+
+        assertTrue("State should exist.", stateService.exists(state3.getId()));
+        assertFalse("State should not exist.", stateService.exists(6666));
     }
 
 }

@@ -29,4 +29,8 @@ public class StateService {
         stateRepository.deleteAll();
     }
 
+    public boolean exists(Integer id) {
+        return stateRepository.existsById(id);
+    }
+
 }
