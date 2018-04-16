@@ -20,12 +20,12 @@ public class StateService {
         stateRepository.save(user);
     }
 
-    public List<State> getAllUsers() {
+    public List<State> getAllStates() {
         return StreamSupport.stream(stateRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
-    public void deleteUsers() {
+    public void deleteStates() {
         stateRepository.deleteAll();
     }
 

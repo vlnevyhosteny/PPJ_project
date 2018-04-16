@@ -8,19 +8,24 @@ public class City {
 
     @Id
     @GeneratedValue
+    @Column(name = "city_id")
     private int id;
 
     @Column(name = "name")
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "state_id", insertable=false, updatable=false)
     private State state;
 
     public City(int id, String name, State state) {
         this.id = id;
         this.name = name;
         this.state = state;
+    }
+
+    public City() {
+        this.state = new State();
     }
 
     public int getId() {

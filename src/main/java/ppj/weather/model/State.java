@@ -9,6 +9,7 @@ public class State {
 
     @Id
     @GeneratedValue
+    @Column(name = "state_id")
     private int id;
 
     @Column(name = "name")
@@ -20,6 +21,14 @@ public class State {
     public State(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public State(String name) {
+        this.name = name;
+    }
+
+    public State() {
+
     }
 
     public int getId() {
