@@ -7,6 +7,6 @@ import ppj.weather.model.State;
 @Repository
 public interface StateRepository extends CrudRepository<State, Integer> {
 
-
+    boolean exists(int id);
 
 }
