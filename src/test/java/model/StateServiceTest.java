@@ -52,7 +52,8 @@ public class StateServiceTest {
 
         assertEquals("One user should have been created and retrieved", 1, states1.size());
 
-        assertEquals("Inserted user should match retrieved", state1, states1.get(0));
+        State retrieved1 = states1.get(0);
+        assertEquals("Inserted user should match retrieved", state1.toString(), retrieved1.toString());
 
         stateService.create(state2);
         stateService.create(state3);
