@@ -26,30 +26,6 @@ import java.util.List;
 @EntityScan("ppj.weather.model")
 public class Main {
 
-    @Bean
-    public StateDao stateDao() {
-        return new StateDao();
-    }
-
-    @Bean
-    public CityDao cityDao() {
-        return new CityDao();
-    }
-
-    @Autowired
-    public EntityManagerFactory entityManagerFactory;
-
-    @Bean
-    public PlatformTransactionManager txManager() {
-        return new HibernateTransactionManager(entityManagerFactory.unwrap(SessionFactory.class));
-    }
-
-    @Profile({"devel"})
-    @Bean(initMethod = "doProvision")
-    public Provisioner provisioner() {
-        return new Provisioner();
-    }
-
     public static void main(String[] args) throws Exception {
 
         SpringApplication app = new SpringApplication(Main.class);
