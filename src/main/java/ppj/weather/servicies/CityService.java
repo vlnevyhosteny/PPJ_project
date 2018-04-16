@@ -23,17 +23,8 @@ public class CityService {
         cityRepository.save(offer);
     }
 
-    public City getCity(Integer id) {
-        return cityRepository.findOne(id);
-    }
-
-
     public void saveOrUpdate(City offer) {
         cityRepository.save(offer);
-    }
-
-    public void delete(int id) {
-        cityRepository.delete(id);
     }
 
     public void deleteOffers() {

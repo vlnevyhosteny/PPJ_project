@@ -20,10 +20,6 @@ public class StateService {
         stateRepository.save(user);
     }
 
-    public boolean exists(int id) {
-        return stateRepository.exists(id);
-    }
-
     public List<State> getAllUsers() {
         return StreamSupport.stream(stateRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());

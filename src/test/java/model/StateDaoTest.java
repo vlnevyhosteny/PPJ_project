@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ppj.weather.Main;
-import ppj.weather.model.StateDao;
+import ppj.weather.servicies.StateService;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -21,11 +21,11 @@ import static org.junit.Assert.assertTrue;
 public class StateDaoTest {
 
     @Autowired
-    private StateDao stateDao;
+    private StateService stateService;
 
     @Test
     public void getStateTest() {
-        Assert.assertTrue(stateDao.getStates().size() > 0);
+        Assert.assertTrue(stateService != null);
     }
 
 }
