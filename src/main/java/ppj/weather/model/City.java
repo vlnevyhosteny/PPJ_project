@@ -28,6 +28,11 @@ public class City {
         this.state = new State();
     }
 
+    public City(String name, State state) {
+        this.state = state;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

@@ -27,10 +27,10 @@ public class StateServiceTest {
     @Autowired
     private StateService stateService;
 
-    private State state1 = new State( "Liberec");
-    private State state2 = new State( "Praha");
-    private State state3 = new State( "Plzen");
-    private State state4 = new State( "Brno");
+    private State state1 = new State( "UK");
+    private State state2 = new State( "Czech Republic");
+    private State state3 = new State( "Germany");
+    private State state4 = new State( "Swiss");
 
     @Before
     public void init() {
