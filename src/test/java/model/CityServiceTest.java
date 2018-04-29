@@ -70,7 +70,7 @@ public class CityServiceTest {
         cityService.saveOrUpdate(city7);
 
         List<City> cities = cityService.getCities();
-        assertEquals("Should be six cities for states.", 6,
+        assertEquals("Should be six cities for states.", 7,
                 cities.size());
     }
 

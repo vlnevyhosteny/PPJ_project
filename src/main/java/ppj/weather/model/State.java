@@ -9,13 +9,13 @@ public class State {
 
     @Id
     @GeneratedValue
-    @Column(name = "state_id")
+    @Column(name = "id_state")
     private int id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "state", cascade = CascadeType.ALL)
     private List<City> cities;
 
     public State(int id, String name) {

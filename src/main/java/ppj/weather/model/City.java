@@ -1,5 +1,7 @@
 package ppj.weather.model;
 
+import org.hibernate.annotations.JoinColumnOrFormula;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,14 +10,14 @@ public class City {
 
     @Id
     @GeneratedValue
-    @Column(name = "city_id")
+    @Column(name = "id_city")
     private int id;
 
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "state_id", insertable=false, updatable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_state")
     private State state;
 
     public City(int id, String name, State state) {
@@ -62,7 +64,6 @@ public class City {
         return "City{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", state=" + state +
                 '}';
     }
 }
