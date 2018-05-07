@@ -12,23 +12,21 @@ public class WeatherRecord {
 
     private Date date;
 
-    private Weather weather;
 
-    public WeatherRecord(int id, City city, int cityId, Date date, Weather weather) {
-        this.id = id;
-        this.city = city;
-        this.cityId = cityId;
-        this.date = date;
-        this.weather = weather;
-    }
+    private double temperature;
 
-    public WeatherRecord(int id, City city, int cityId, Date date,
+    private double humidity;
+
+    private double precipitation;
+
+    public WeatherRecord(int id, int cityId, Date date,
                          double temperature, double humidity, double precipitation) {
         this.id = id;
-        this.city = city;
         this.cityId = cityId;
         this.date = date;
-        this.weather = new Weather(temperature, humidity, precipitation);
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.precipitation = precipitation;
     }
 
     public int getId() {
@@ -63,22 +61,39 @@ public class WeatherRecord {
         this.date = date;
     }
 
-    public Weather getWeather() {
-        return weather;
+    public double getTemperature() {
+        return temperature;
     }
 
-    public void setWeather(Weather weather) {
-        this.weather = weather;
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public double getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(double humidity) {
+        this.humidity = humidity;
+    }
+
+    public double getPrecipitation() {
+        return precipitation;
+    }
+
+    public void setPrecipitation(double precipitation) {
+        this.precipitation = precipitation;
     }
 
     @Override
     public String toString() {
         return "WeatherRecord{" +
                 "id=" + id +
-                ", city=" + city +
                 ", cityId=" + cityId +
                 ", date=" + date +
-                ", weather=" + weather +
+                ", temperature=" + temperature +
+                ", humidity=" + humidity +
+                ", precipitation=" + precipitation +
                 '}';
     }
 }
