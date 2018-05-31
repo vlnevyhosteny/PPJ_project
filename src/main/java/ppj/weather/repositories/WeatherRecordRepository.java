@@ -8,6 +8,4 @@ import java.util.stream.Stream;
 
 public interface WeatherRecordRepository extends MongoRepository<WeatherRecord, ObjectId> {
 
-    Stream<WeatherRecord> streamAll();
-
 }

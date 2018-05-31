@@ -1,16 +1,36 @@
 package ppj.weather.servicies;
 
-import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Service;
 import ppj.weather.model.WeatherRecord;
+import ppj.weather.repositories.CityRepository;
+import ppj.weather.repositories.WeatherRecordRepository;
 
-import java.util.Map;
+@Service
+public class WeatherRecordService {
 
-public interface WeatherRecordService {
+    private final CityRepository cityRepository;
 
-    WeatherRecord find(ObjectId objectId);
+    private final WeatherRecordRepository repository;
 
-    WeatherRecord add(WeatherRecord user);
+    private final MongoTemplate mongoTemplate;
 
-    void remove(WeatherRecord user);
+    @Autowired
+    public WeatherRecordService(CityRepository cityRepository, WeatherRecordRepository repository,
+                                MongoTemplate mongoTemplate) {
+
+        this.cityRepository = cityRepository;
+        this.repository = repository;
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    public long getCount() {
+        return repository.count();
+    }
+
+    public WeatherRecord insert(WeatherRecord weatherRecord) {
+        return repository.save(weatherRecord);
+    }
 
 }
