@@ -2,9 +2,17 @@ package ppj.weather.model;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.GeneratedValue;
+
+@Document(collection = "weatherRecords")
 public class WeatherRecord {
 
-    private int id;
+    @Id
+    @GeneratedValue
+    private String id;
 
     private City city;
 
@@ -19,7 +27,10 @@ public class WeatherRecord {
 
     private double precipitation;
 
-    public WeatherRecord(int id, int cityId, Date date,
+    public WeatherRecord() {
+    }
+
+    public WeatherRecord(String id, int cityId, Date date,
                          double temperature, double humidity, double precipitation) {
         this.id = id;
         this.cityId = cityId;
@@ -29,11 +40,20 @@ public class WeatherRecord {
         this.precipitation = precipitation;
     }
 
-    public int getId() {
+    public WeatherRecord(int cityId, double temperature, double humidity,
+                         double precipitation) {
+        this.cityId = cityId;
+        this.date = new Date();
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.precipitation = precipitation;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
