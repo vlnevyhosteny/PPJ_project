@@ -27,6 +27,9 @@ public class WeatherRecord {
 
     private double precipitation;
 
+    public WeatherRecord() {
+    }
+
     public WeatherRecord(String id, int cityId, Date date,
                          double temperature, double humidity, double precipitation) {
         this.id = id;
