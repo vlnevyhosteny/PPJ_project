@@ -3,6 +3,8 @@ package ppj.weather.web.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.thymeleaf.spring5.expression.Mvc;
 import ppj.weather.model.State;
 import ppj.weather.servicies.StateService;
 import ppj.weather.servicies.WeatherRecordService;
@@ -30,4 +32,11 @@ public class ActualWeatherController {
         return "index";
     }
 
+    @GetMapping(MvcRoutes.ACTUAL_WAETHER_CONCRETE)
+    public String dataForState(@PathVariable("id") long id, Model model) {
+        List<State> states = stateService.getAllStates();
+        model.addAttribute("states", states);
+
+        return "index";
+    }
 }
