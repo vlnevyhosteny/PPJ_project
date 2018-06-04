@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Actual Weather</title>
     </head>
     <body>
-        Hello world!
+        <h1>Actual weather for cities of selected state</h1>
+        <p>Please select state:</p>
+        <ul>
+            <input type="radio" th:each="state : ${states}" th:text="${state.getName()}" th:id="${state.getId()}" />
+        </ul>
     </body>
 </html>
