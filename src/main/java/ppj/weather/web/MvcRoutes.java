@@ -6,8 +6,8 @@ public interface MvcRoutes {
 
     String INDEX = "/index";
 
-    String ACTUAL_WEATHER = "/actualWeather";
+    String LATEST_WEATHER = "/actualWeather";
 
-    String ACTUAL_WEATHER_WITH_ID = "/actualWeather/{id}";
+    String LATEST_WEATHER_WITH_ID = "/actualWeather/{id}";
 
 }

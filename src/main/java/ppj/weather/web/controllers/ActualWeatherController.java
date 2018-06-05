@@ -25,7 +25,7 @@ public class ActualWeatherController {
         this.weatherRecordService = weatherRecordService;
     }
 
-    @GetMapping({MvcRoutes.ROOT, MvcRoutes.INDEX, MvcRoutes.ACTUAL_WEATHER})
+    @GetMapping({MvcRoutes.ROOT, MvcRoutes.INDEX, MvcRoutes.LATEST_WEATHER})
     public String index(Model model) {
         List<State> states = stateService.getAllStates();
         model.addAttribute("states", states);
@@ -33,7 +33,7 @@ public class ActualWeatherController {
         return "index";
     }
 
-    @GetMapping(MvcRoutes.ACTUAL_WEATHER_WITH_ID)
+    @GetMapping(MvcRoutes.LATEST_WEATHER_WITH_ID)
     public String dataForState(@PathVariable("id") long id, Model model) {
         List<State> states = stateService.getAllStates();
         model.addAttribute("states", states);
