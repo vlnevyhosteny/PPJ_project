@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.thymeleaf.spring5.expression.Mvc;
 import ppj.weather.model.State;
+import ppj.weather.model.joins.CityWithLatestWeatherRecord;
 import ppj.weather.servicies.StateService;
 import ppj.weather.servicies.WeatherRecordService;
 import ppj.weather.web.MvcRoutes;
@@ -36,6 +37,10 @@ public class ActualWeatherController {
     public String dataForState(@PathVariable("id") long id, Model model) {
         List<State> states = stateService.getAllStates();
         model.addAttribute("states", states);
+
+        List<CityWithLatestWeatherRecord> latestWeatherRecords =
+                weatherRecordService.getCitiesWithLatestWeatherForState((int)id);
+        model.addAttribute("weatherRecords", latestWeatherRecords);
 
         return "index";
     }

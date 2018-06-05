@@ -66,19 +66,21 @@ public class WeatherRecordService {
     }
 
     public List<CityWithLatestWeatherRecord> getCitiesWithLatestWeatherForState(int idState) {
-        List<City> cities = cityRepository.findAllById_State(idState);
+        List<City> cities = cityRepository.findAllByState_Id(idState);
 
         List<CityWithLatestWeatherRecord> result = new ArrayList<>();
         cities.forEach((city -> {
             WeatherRecord latest = this.findLatestWeatherRecordForCity(city.getId());
 
-            result.add(new CityWithLatestWeatherRecord(city, latest));
+            if(latest != null) {
+                result.add(new CityWithLatestWeatherRecord(city, latest));
+            }
         }));
 
         return result;
     }
 
     private WeatherRecord findLatestWeatherRecordForCity(int id) {
-        return repository.findFirstByCityOrderByIdDesc(id);
+        return repository.findFirstByCityIdOrderByIdDesc(id);
     }
 }
