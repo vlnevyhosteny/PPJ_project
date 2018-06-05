@@ -5,4 +5,6 @@ import ppj.weather.model.WeatherRecord;
 
 public interface WeatherRecordRepository extends MongoRepository<WeatherRecord, String> {
 
+    WeatherRecord findFirstByCityOrderByIdDesc(int city_id);
+
 }

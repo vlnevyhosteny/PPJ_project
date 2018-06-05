@@ -2,6 +2,6 @@
 
 function selectState(selectedStateId) {
 
-    window.location.href = "/" + selectedStateId;
+    window.location.href = "/actualWeather/" + selectedStateId;
 
 }

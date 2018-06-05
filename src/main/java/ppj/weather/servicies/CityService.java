@@ -45,4 +45,5 @@ public class CityService {
     public void delete(int id) {
         cityRepository.deleteById(id);
     }
+
 }

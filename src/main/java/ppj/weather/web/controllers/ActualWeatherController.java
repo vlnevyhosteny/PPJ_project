@@ -32,7 +32,7 @@ public class ActualWeatherController {
         return "index";
     }
 
-    @GetMapping(MvcRoutes.ACTUAL_WAETHER_CONCRETE)
+    @GetMapping(MvcRoutes.ACTUAL_WEATHER_WITH_ID)
     public String dataForState(@PathVariable("id") long id, Model model) {
         List<State> states = stateService.getAllStates();
         model.addAttribute("states", states);

@@ -41,7 +41,7 @@ public class WeatherRecordServiceTest {
     }
 
     @Test
-    public void testDeleteWeratherRecord() {
+    public void testDeleteWeatherRecord() {
         WeatherRecord record    = new WeatherRecord(1, 20, 20, 20);
         weatherRecordService.insert(record);
         WeatherRecord record2   = new WeatherRecord(1, 20, 20, 20);

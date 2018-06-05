@@ -8,6 +8,6 @@ public interface MvcRoutes {
 
     String ACTUAL_WEATHER = "/actualWeather";
 
-    String ACTUAL_WAETHER_CONCRETE = "/actualWeather/{id}";
+    String ACTUAL_WEATHER_WITH_ID = "/actualWeather/{id}";
 
 }

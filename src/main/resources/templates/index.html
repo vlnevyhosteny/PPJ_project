@@ -9,14 +9,28 @@
     <body>
         <h1>Actual weather for cities of selected state</h1>
         <p>Please select state:</p>
-        <ul>
-            <input type="radio"
-                   th:each="state : ${states}"
-                   th:text="${state.getName()}"
-                   th:id="${state.getId()}"
-                   name="state"
-                   onclick="selectState(this.id)"/>
-            <br />
-        </ul>
+        <input type="radio"
+               th:each="state : ${states}"
+               th:text="${state.getName()}"
+               th:id="${state.getId()}"
+               name="state"
+               onclick="selectState(this.id)"/>
+        <br />
+
+        <table>
+            <thead>
+                <tr>
+                    <th>City</th>
+                    <th>Latest Temperature</th>
+                    <th>Latest Humidity</th>
+                    <th>Latest Precipitation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="weatherRecord : ${weatherRecords}">
+                    <td th:text="${weatherRecord.}"
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
