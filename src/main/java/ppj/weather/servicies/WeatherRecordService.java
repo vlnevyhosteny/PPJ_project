@@ -5,10 +5,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
+import ppj.weather.model.City;
 import ppj.weather.model.WeatherRecord;
+import ppj.weather.model.joins.CityWithLatestWeatherRecord;
 import ppj.weather.repositories.CityRepository;
 import ppj.weather.repositories.WeatherRecordRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,5 +63,24 @@ public class WeatherRecordService {
 
     public List<WeatherRecord> getAll(Pageable pageable) {
         return repository.findAll(pageable).getContent();
+    }
+
+    public List<CityWithLatestWeatherRecord> getCitiesWithLatestWeatherForState(int idState) {
+        List<City> cities = cityRepository.findAllByState_Id(idState);
+
+        List<CityWithLatestWeatherRecord> result = new ArrayList<>();
+        cities.forEach((city -> {
+            WeatherRecord latest = this.findLatestWeatherRecordForCity(city.getId());
+
+            if(latest != null) {
+                result.add(new CityWithLatestWeatherRecord(city, latest));
+            }
+        }));
+
+        return result;
+    }
+
+    private WeatherRecord findLatestWeatherRecordForCity(int id) {
+        return repository.findFirstByCityIdOrderByIdDesc(id);
     }
 }

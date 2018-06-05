@@ -10,7 +10,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ppj.weather.Main;
+import ppj.weather.model.City;
+import ppj.weather.model.State;
 import ppj.weather.model.WeatherRecord;
+import ppj.weather.model.joins.CityWithLatestWeatherRecord;
+import ppj.weather.servicies.CityService;
+import ppj.weather.servicies.StateService;
 import ppj.weather.servicies.WeatherRecordService;
 
 import javax.xml.ws.Response;
@@ -25,8 +30,14 @@ import static org.junit.Assert.*;
 @ActiveProfiles({"test"})
 public class WeatherRecordServiceTest {
 
-   @Autowired
+    @Autowired
     private WeatherRecordService weatherRecordService;
+
+    @Autowired
+    private StateService stateService;
+
+    @Autowired
+    private CityService cityService;
 
     @Test
     public void testCreateWeatherRecord() {
@@ -41,7 +52,7 @@ public class WeatherRecordServiceTest {
     }
 
     @Test
-    public void testDeleteWeratherRecord() {
+    public void testDeleteWeatherRecord() {
         WeatherRecord record    = new WeatherRecord(1, 20, 20, 20);
         weatherRecordService.insert(record);
         WeatherRecord record2   = new WeatherRecord(1, 20, 20, 20);
@@ -104,6 +115,28 @@ public class WeatherRecordServiceTest {
 
         assertTrue("Should be same", arrResult[0].getId().equals(record3.getId()));
         assertTrue("Should be same", arrResult[1].getId().equals(record4.getId()));
+    }
+
+    @Test
+    public void testGetCitiesWithLatestWeatherForState() {
+        State state = new State("Czech Republic");
+        stateService.create(state);
+
+        cityService.create(new City("Praha", state));
+        cityService.create(new City("Liberec", state));
+
+        WeatherRecord record4   = new WeatherRecord(1, 20, 20, 20);
+        weatherRecordService.insert(record4);
+        WeatherRecord record    = new WeatherRecord(3, 20, 20, 20);
+        weatherRecordService.insert(record);
+        WeatherRecord record2   = new WeatherRecord(3, 30, 30, 30);
+        weatherRecordService.insert(record2);
+
+        List<CityWithLatestWeatherRecord> cityWithLatestWeatherRecords
+            = weatherRecordService.getCitiesWithLatestWeatherForState(1);
+
+        assertTrue("Should be more than zero", cityWithLatestWeatherRecords.size() > 0);
+        assertTrue("Should be latest temp", cityWithLatestWeatherRecords.get(1).getTemperature() == record2.getTemperature());
     }
 
     @Before
