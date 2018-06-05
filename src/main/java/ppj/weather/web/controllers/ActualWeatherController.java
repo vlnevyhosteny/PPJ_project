@@ -42,6 +42,6 @@ public class ActualWeatherController {
                 weatherRecordService.getCitiesWithLatestWeatherForState((int)id);
         model.addAttribute("weatherRecords", latestWeatherRecords);
 
-        return "index";
+        return "latest-weather";
     }
 }
