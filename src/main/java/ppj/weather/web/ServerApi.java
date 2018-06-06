@@ -2,6 +2,7 @@ package ppj.weather.web;
 
 import ppj.weather.model.State;
 
+import retrofit2.Call;
 import retrofit2.http.*;
 
 import java.util.List;
@@ -12,15 +13,18 @@ public interface ServerApi {
     public static final String STATE_PATH  = STATES_PATH + "/{id}";
 
     @GET(STATES_PATH)
-    List<State> showStates();
+    Call<List<State>> showStates();
 
     @POST(STATES_PATH)
-    void addState(@Body State state);
+    Call<State> addState(@Body State state);
 
     @GET(STATE_PATH)
-    State getState(@Path("id") int id);
+    Call<State> getState(@Path("id") int id);
 
     @DELETE(STATE_PATH)
     void deleteState(@Path("id") int id);
+
+    @PUT(STATE_PATH)
+    Call<State> updateState(@Body State state);
 
 }

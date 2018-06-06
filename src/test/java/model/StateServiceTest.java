@@ -109,4 +109,15 @@ public class StateServiceTest {
         assertFalse("Should not be present", result.isPresent());
     }
 
+    @Test
+    public void testGetStateCount() {
+        stateService.create(state2);
+        stateService.create(state3);
+        stateService.create(state4);
+
+        int result = stateService.getStateCount();
+
+        assertFalse("Should be equals 3", result == 3);
+    }
+
 }

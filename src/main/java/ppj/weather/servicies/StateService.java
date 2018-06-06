@@ -45,4 +45,8 @@ public class StateService {
     public void delete(int id) {
         stateRepository.deleteById(id);
     }
+
+    public int getStateCount() {
+        return (int)stateRepository.count();
+    }
 }
