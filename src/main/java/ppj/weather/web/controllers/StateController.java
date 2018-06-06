@@ -3,14 +3,13 @@ package ppj.weather.web.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ppj.weather.model.State;
 import ppj.weather.servicies.StateService;
 import ppj.weather.web.ServerApi;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class StateController {
@@ -26,6 +25,52 @@ public class StateController {
     public ResponseEntity<List<State>> getStates() {
         List<State> states = stateService.getAllStates();
 
-        return new ResponseEntity<>(states, HttpStatus.FOUND);
+        return new ResponseEntity<>(states, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = ServerApi.STATES_PATH, method = RequestMethod.POST)
+    public ResponseEntity<State> createState(@RequestBody State state) {
+        if(stateService.exists(state.getId())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            stateService.create(state);
+
+            return new ResponseEntity<>(state, HttpStatus.CREATED);
+        }
+    }
+
+    @RequestMapping(value = ServerApi.STATE_PATH, method = RequestMethod.PUT)
+    public ResponseEntity<State> updateState(@RequestBody State state) {
+        if(stateService.exists(state.getId())) {
+            State updated = stateService.save(state);
+
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = ServerApi.STATE_PATH, method = RequestMethod.GET)
+    public ResponseEntity<State> getState(@PathVariable("id") int id) {
+        Optional<State> result = stateService.get(id);
+
+        if(result.isPresent() == false) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(result.get(), HttpStatus.FOUND);
+        }
+    }
+
+    @RequestMapping(value = ServerApi.STATE_PATH, method = RequestMethod.DELETE)
+    public ResponseEntity deleteState(@PathVariable("id") int id) {
+        Optional<State> result = stateService.get(id);
+
+        if(result.isPresent()) {
+            stateService.delete(id);
+
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 }

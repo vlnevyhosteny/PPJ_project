@@ -7,6 +7,7 @@ import ppj.weather.model.State;
 import ppj.weather.repositories.StateRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -33,4 +34,15 @@ public class StateService {
         return stateRepository.existsById(id);
     }
 
+    public Optional<State> get(Integer id) {
+        return stateRepository.findById(id);
+    }
+
+    public State save(State state) {
+        return stateRepository.save(state);
+    }
+
+    public void delete(int id) {
+        stateRepository.deleteById(id);
+    }
 }
