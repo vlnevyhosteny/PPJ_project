@@ -22,7 +22,7 @@ public interface ServerApi {
     Call<State> getState(@Path("id") int id);
 
     @DELETE(STATE_PATH)
-    void deleteState(@Path("id") int id);
+    Call<Void> deleteState(@Path("id") int id);
 
     @PUT(STATE_PATH)
     Call<State> updateState(@Body State state);

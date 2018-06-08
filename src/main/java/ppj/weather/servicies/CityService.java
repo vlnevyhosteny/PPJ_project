@@ -20,12 +20,12 @@ public class CityService {
         return StreamSupport.stream(cityRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
-    public void create(City city) {
-        cityRepository.save(city);
+    public City create(City city) {
+        return cityRepository.save(city);
     }
 
-    public void saveOrUpdate(City city) {
-        cityRepository.save(city);
+    public City saveOrUpdate(City city) {
+        return cityRepository.save(city);
     }
 
     public void deleteCities() {

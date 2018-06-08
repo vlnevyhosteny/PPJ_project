@@ -3,9 +3,13 @@ package web.controllers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import ppj.weather.Main;
 import ppj.weather.model.State;
 import ppj.weather.servicies.StateService;
@@ -21,7 +25,8 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Main.class)
+@SpringBootTest(classes = {Main.class},
+        webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles({"test"})
 public class StateControllerTest {
 
@@ -57,7 +62,7 @@ public class StateControllerTest {
     public void testDeleteState() throws IOException {
         stateService.create(state1);
 
-        restService.deleteState(state1.getId());
+        restService.deleteState(state1.getId()).execute();
 
         Optional<State> result = stateService.get(state1.getId());
 
@@ -69,11 +74,13 @@ public class StateControllerTest {
         stateService.create(state1);
 
         State toUpdate = stateService.get(state1.getId()).get();
-        toUpdate.setName("UK");
+        state1.setName("UK");
 
         Response<State> updated = restService.updateState(state1).execute();
         assertNotNull("Response should not be null.", updated);
-        assertEquals("Name should be updated", updated.body().getName(), "UK");
+
+        State result = stateService.get(state1.getId()).get();
+        assertEquals("Name should be updated","UK",result.getName());
     }
 
     @Test
@@ -88,7 +95,8 @@ public class StateControllerTest {
 
         assertNotNull("Response shoul not be null", response);
         assertEquals("Count should be the same", count, response.body().size());
-        assertTrue("State1 should be present", response.body().get(0).getId() == state1.getId());
+        assertTrue("State1 should be present", response.body().get((response.body().size() - 1)).getId()
+                == state3.getId());
     }
 
     @Test

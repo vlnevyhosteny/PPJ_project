@@ -117,7 +117,7 @@ public class StateServiceTest {
 
         int result = stateService.getStateCount();
 
-        assertFalse("Should be equals 3", result == 3);
+        assertTrue("Should be equals 3", result == 3);
     }
 
 }

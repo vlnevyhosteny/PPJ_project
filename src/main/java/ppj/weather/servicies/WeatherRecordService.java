@@ -22,15 +22,11 @@ public class WeatherRecordService {
 
     private final WeatherRecordRepository repository;
 
-    private final MongoTemplate mongoTemplate;
-
     @Autowired
-    public WeatherRecordService(CityRepository cityRepository, WeatherRecordRepository repository,
-                                MongoTemplate mongoTemplate) {
+    public WeatherRecordService(CityRepository cityRepository, WeatherRecordRepository repository) {
 
         this.cityRepository = cityRepository;
         this.repository = repository;
-        this.mongoTemplate = mongoTemplate;
     }
 
     public long getCount() {

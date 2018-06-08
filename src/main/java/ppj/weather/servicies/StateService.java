@@ -49,4 +49,8 @@ public class StateService {
     public int getStateCount() {
         return (int)stateRepository.count();
     }
+
+    public void delete(State state) {
+        stateRepository.delete(state);
+    }
 }

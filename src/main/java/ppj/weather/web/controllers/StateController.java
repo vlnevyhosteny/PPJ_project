@@ -41,7 +41,9 @@ public class StateController {
 
     @RequestMapping(value = ServerApi.STATE_PATH, method = RequestMethod.PUT)
     public ResponseEntity<State> updateState(@RequestBody State state) {
-        if(stateService.exists(state.getId())) {
+        Optional<State> result = stateService.get(state.getId());
+
+        if(result.isPresent()) {
             State updated = stateService.save(state);
 
             return new ResponseEntity<>(updated, HttpStatus.OK);
@@ -57,7 +59,7 @@ public class StateController {
         if(result.isPresent() == false) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(result.get(), HttpStatus.FOUND);
+            return new ResponseEntity<>(result.get(), HttpStatus.OK);
         }
     }
 
@@ -66,7 +68,7 @@ public class StateController {
         Optional<State> result = stateService.get(id);
 
         if(result.isPresent()) {
-            stateService.delete(id);
+            stateService.delete(result.get());
 
             return new ResponseEntity(HttpStatus.OK);
         } else {

@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -122,21 +123,31 @@ public class WeatherRecordServiceTest {
         State state = new State("Czech Republic");
         stateService.create(state);
 
-        cityService.create(new City("Praha", state));
-        cityService.create(new City("Liberec", state));
+        City city1 = cityService.create(new City("Praha", state));
+        City city2 = cityService.create(new City("Liberec", state));
 
-        WeatherRecord record4   = new WeatherRecord(1, 20, 20, 20);
+        WeatherRecord record4   = new WeatherRecord(city1.getId(), 20, 20, 20);
         weatherRecordService.insert(record4);
-        WeatherRecord record    = new WeatherRecord(3, 20, 20, 20);
+        WeatherRecord record    = new WeatherRecord(city2.getId(), 20, 20, 20);
         weatherRecordService.insert(record);
-        WeatherRecord record2   = new WeatherRecord(3, 30, 30, 30);
+        WeatherRecord record2   = new WeatherRecord(city2.getId(), 30, 30, 30);
         weatherRecordService.insert(record2);
 
         List<CityWithLatestWeatherRecord> cityWithLatestWeatherRecords
-            = weatherRecordService.getCitiesWithLatestWeatherForState(1);
+            = weatherRecordService.getCitiesWithLatestWeatherForState(state.getId());
 
         assertTrue("Should be more than zero", cityWithLatestWeatherRecords.size() > 0);
-        assertTrue("Should be latest temp", cityWithLatestWeatherRecords.get(1).getTemperature() == record2.getTemperature());
+
+        CityWithLatestWeatherRecord cityWithLatestWeatherRecord = null;
+        for (CityWithLatestWeatherRecord item:
+             cityWithLatestWeatherRecords) {
+            if(item.getCityName().equals(city2.getName())) {
+                cityWithLatestWeatherRecord = item;
+            }
+        }
+
+        assertNotNull(cityWithLatestWeatherRecord);
+        assertEquals("temp should be same", (int)record2.getTemperature(), (int)cityWithLatestWeatherRecord.getTemperature());
     }
 
     @Before
