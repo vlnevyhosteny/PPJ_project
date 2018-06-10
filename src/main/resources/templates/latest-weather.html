@@ -19,7 +19,7 @@
         </thead>
         <tbody>
         <tr th:each="weatherRecord : ${weatherRecords}">
-            <td th:text="${weatherRecord.getCityName()}"></td>
+            <td th:text="${weatherRecord.getCity().getName()}"></td>
             <td th:text="${weatherRecord.getTemperature()}"></td>
             <td th:text="${weatherRecord.getHumidity()}"></td>
             <td th:text="${weatherRecord.getPrecipitation()}"></td>
