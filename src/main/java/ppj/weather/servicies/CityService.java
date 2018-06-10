@@ -16,34 +16,41 @@ public class CityService {
     @Autowired
     private CityRepository cityRepository;
 
-    public List<City> getCities() {
+    public List<City> get() {
         return StreamSupport.stream(cityRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
-    public void create(City city) {
-        cityRepository.save(city);
+    public City create(City city) {
+        return cityRepository.save(city);
     }
 
-    public void saveOrUpdate(City city) {
-        cityRepository.save(city);
+    public City save(City city) {
+        return cityRepository.save(city);
     }
 
     public void deleteCities() {
         cityRepository.deleteAll();
     }
 
-    public City getCity(int id) {
+    public Optional<City> get(int id) {
         Optional<City> city = cityRepository.findById(id);
 
-        if(city.isPresent()) {
-            return city.get();
-        } else {
-            return null;
-        }
+        return city;
     }
 
     public void delete(int id) {
         cityRepository.deleteById(id);
     }
 
+    public void delete(City city) {
+        cityRepository.delete(city);
+    }
+
+    public boolean exists(Integer id) {
+        return cityRepository.existsById(id);
+    }
+
+    public int getCitiesCount() {
+        return (int) cityRepository.count();
+    }
 }

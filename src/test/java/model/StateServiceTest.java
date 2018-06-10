@@ -15,6 +15,7 @@ import ppj.weather.model.State;
 import ppj.weather.servicies.StateService;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -68,6 +69,55 @@ public class StateServiceTest {
 
         assertTrue("State should exist.", stateService.exists(state3.getId()));
         assertFalse("State should not exist.", stateService.exists(6666));
+    }
+
+    @Test
+    public void testGet() {
+        stateService.create(state2);
+        stateService.create(state3);
+        stateService.create(state4);
+
+        Optional<State> result = stateService.get(state3.getId());
+
+        assertTrue("State should be returned.", result.isPresent());
+        assertTrue("Should be same", result.get().getId() == state3.getId());
+    }
+
+    @Test
+    public void testSave() {
+        stateService.create(state1);
+
+        state1.setName("tested");
+        stateService.save(state1);
+
+        Optional<State> result = stateService.get(state1.getId());
+
+        assertTrue("Should be present", result.isPresent());
+        assertTrue("Should be updated", result.get().getName().equals("tested"));
+    }
+
+    @Test
+    public void testDelete() {
+        stateService.create(state2);
+        stateService.create(state3);
+        stateService.create(state4);
+
+        stateService.delete(state3.getId());
+
+        Optional<State> result = stateService.get(state3.getId());
+
+        assertFalse("Should not be present", result.isPresent());
+    }
+
+    @Test
+    public void testGetStateCount() {
+        stateService.create(state2);
+        stateService.create(state3);
+        stateService.create(state4);
+
+        int result = stateService.getStateCount();
+
+        assertTrue("Should be equals 3", result == 3);
     }
 
 }

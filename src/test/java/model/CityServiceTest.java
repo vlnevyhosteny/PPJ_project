@@ -54,22 +54,22 @@ public class CityServiceTest {
         stateService.create(state3);
         stateService.create(state4);
 
-        cityService.saveOrUpdate(city1);
+        cityService.save(city1);
 
-        List<City> cities1 = cityService.getCities();
+        List<City> cities1 = cityService.get();
         assertEquals("Should be one city.", 1, cities1.size());
 
         assertEquals("Retrieved city should equal inserted city", city1.toString(),
                 cities1.get(0).toString());
 
-        cityService.saveOrUpdate(city2);
-        cityService.saveOrUpdate(city3);
-        cityService.saveOrUpdate(city4);
-        cityService.saveOrUpdate(city5);
-        cityService.saveOrUpdate(city6);
-        cityService.saveOrUpdate(city7);
+        cityService.save(city2);
+        cityService.save(city3);
+        cityService.save(city4);
+        cityService.save(city5);
+        cityService.save(city6);
+        cityService.save(city7);
 
-        List<City> cities = cityService.getCities();
+        List<City> cities = cityService.get();
         assertEquals("Should be six cities for states.", 7,
                 cities.size());
     }
@@ -81,20 +81,24 @@ public class CityServiceTest {
         stateService.create(state3);
         stateService.create(state4);
 
-        cityService.saveOrUpdate(city1);
-        cityService.saveOrUpdate(city2);
-        cityService.saveOrUpdate(city3);
-        cityService.saveOrUpdate(city4);
-        cityService.saveOrUpdate(city5);
-        cityService.saveOrUpdate(city6);
-        cityService.saveOrUpdate(city7);
+        cityService.save(city1);
+        cityService.save(city2);
+        cityService.save(city3);
+        cityService.save(city4);
+        cityService.save(city5);
+        cityService.save(city6);
+        cityService.save(city7);
 
-        City retrieved1 = cityService.getCity(city1.getId());
-        assertTrue("Some is found", retrieved1 != null);
+        Optional<City> retrieved1 = cityService.get(city1.getId());
+        assertTrue("Some is found", retrieved1.isPresent());
 
         cityService.delete(city2.getId());
-        City retrieved2 = cityService.getCity(city2.getId());
-        assertNull("Deleted city is not present", retrieved2);
+        Optional<City> retrieved2 = cityService.get(city2.getId());
+        assertFalse("Deleted city is not present", retrieved2.isPresent());
+
+        cityService.delete(city3);
+        Optional<City> retrieved3 = cityService.get(city3.getId());
+        assertFalse("Deleted city is not present", retrieved3.isPresent());
     }
 
     @Test
@@ -104,18 +108,18 @@ public class CityServiceTest {
         stateService.create(state3);
         stateService.create(state4);
 
-        cityService.saveOrUpdate(city1);
-        cityService.saveOrUpdate(city2);
-        cityService.saveOrUpdate(city3);
-        cityService.saveOrUpdate(city4);
-        cityService.saveOrUpdate(city5);
-        cityService.saveOrUpdate(city6);
+        cityService.save(city1);
+        cityService.save(city2);
+        cityService.save(city3);
+        cityService.save(city4);
+        cityService.save(city5);
+        cityService.save(city6);
 
-        City retrieved1 = cityService.getCity(city1.getId());
-        assertNotNull("Some is found", retrieved1);
+        Optional<City> retrieved1 = cityService.get(city1.getId());
+        assertTrue("Some is found", retrieved1.isPresent());
 
-        City retrieved2 = cityService.getCity(city7.getId());
-        assertNull("City is not present", retrieved2);
+        Optional<City> retrieved2 = cityService.get(city7.getId());
+        assertFalse("City is not present", retrieved2.isPresent());
     }
 
     @Test
@@ -125,19 +129,35 @@ public class CityServiceTest {
         stateService.create(state3);
         stateService.create(state4);
 
-        cityService.saveOrUpdate(city1);
-        cityService.saveOrUpdate(city2);
-        cityService.saveOrUpdate(city3);
-        cityService.saveOrUpdate(city4);
-        cityService.saveOrUpdate(city5);
-        cityService.saveOrUpdate(city6);
-        cityService.saveOrUpdate(city7);
+        cityService.save(city1);
+        cityService.save(city2);
+        cityService.save(city3);
+        cityService.save(city4);
+        cityService.save(city5);
+        cityService.save(city6);
+        cityService.save(city7);
 
         city3.setName("Leeds");
-        cityService.saveOrUpdate(city3);
+        cityService.save(city3);
 
-        City retrieved = cityService.getCity(city3.getId());
+        City retrieved = cityService.get(city3.getId()).get();
         assertEquals("Retrieved city should be updated", retrieved.toString(), city3.toString());
+    }
+
+    @Test
+    public void testGetCitiesCount() {
+        stateService.create(state1);
+        stateService.create(state2);
+        stateService.create(state3);
+        stateService.create(state4);
+
+        cityService.save(city1);
+        cityService.save(city2);
+        cityService.save(city3);
+
+        int result = cityService.getCitiesCount();
+
+        assertTrue("Should be equals 3", result == 3);
     }
 
 }

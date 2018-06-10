@@ -1,6 +1,5 @@
 package model;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +13,11 @@ import ppj.weather.model.City;
 import ppj.weather.model.State;
 import ppj.weather.model.WeatherRecord;
 import ppj.weather.model.joins.CityWithLatestWeatherRecord;
+import ppj.weather.model.joins.CityWithWeatherAverages;
+import ppj.weather.model.joins.WeatherStatisticsInterval;
 import ppj.weather.servicies.CityService;
 import ppj.weather.servicies.StateService;
 import ppj.weather.servicies.WeatherRecordService;
-
-import javax.xml.ws.Response;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +43,7 @@ public class WeatherRecordServiceTest {
         WeatherRecord record = new WeatherRecord(1, 20, 20, 20);
         long previous = weatherRecordService.getCount();
 
-        WeatherRecord response = weatherRecordService.insert(record);
+        WeatherRecord response = weatherRecordService.create(record);
         long now = weatherRecordService.getCount();
 
         assertEquals("Record has been inserted", previous, (now - 1));
@@ -54,9 +53,9 @@ public class WeatherRecordServiceTest {
     @Test
     public void testDeleteWeatherRecord() {
         WeatherRecord record    = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record);
+        weatherRecordService.create(record);
         WeatherRecord record2   = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record2);
+        weatherRecordService.create(record2);
 
         long previousCount = weatherRecordService.getCount();
 
@@ -73,13 +72,13 @@ public class WeatherRecordServiceTest {
     @Test
     public void testUpdateWeatherRecord() {
         WeatherRecord record    = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record);
+        weatherRecordService.create(record);
         WeatherRecord record2   = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record2);
+        weatherRecordService.create(record2);
 
         WeatherRecord record1   = weatherRecordService.getAll().get(0);
         record1.setTemperature(100);
-        weatherRecordService.update(record1);
+        weatherRecordService.save(record1);
 
         assertTrue("Should be present", weatherRecordService.get(record1.getId())
             .isPresent());
@@ -90,9 +89,9 @@ public class WeatherRecordServiceTest {
     @Test
     public void testGetWeatherRecord() {
         WeatherRecord record    = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record);
+        weatherRecordService.create(record);
         WeatherRecord record2   = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record2);
+        weatherRecordService.create(record2);
 
         Optional<WeatherRecord> result = weatherRecordService.get(record2.getId());
         assertTrue("Should be present", result.isPresent());
@@ -102,13 +101,13 @@ public class WeatherRecordServiceTest {
     @Test
     public void testGetPageableWeatherRecord() {
         WeatherRecord record    = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record);
+        weatherRecordService.create(record);
         WeatherRecord record2   = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record2);
+        weatherRecordService.create(record2);
         WeatherRecord record3    = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record3);
+        weatherRecordService.create(record3);
         WeatherRecord record4   = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record4);
+        weatherRecordService.create(record4);
 
         Iterable<WeatherRecord> result = weatherRecordService.getAll(PageRequest.of(1, 2));
         WeatherRecord[] arrResult = ((List<WeatherRecord>) result).toArray(new WeatherRecord[((List<WeatherRecord>) result).size()]);
@@ -122,21 +121,69 @@ public class WeatherRecordServiceTest {
         State state = new State("Czech Republic");
         stateService.create(state);
 
-        cityService.create(new City("Praha", state));
-        cityService.create(new City("Liberec", state));
+        City city1 = cityService.create(new City("Praha", state));
+        City city2 = cityService.create(new City("Liberec", state));
 
-        WeatherRecord record4   = new WeatherRecord(1, 20, 20, 20);
-        weatherRecordService.insert(record4);
-        WeatherRecord record    = new WeatherRecord(3, 20, 20, 20);
-        weatherRecordService.insert(record);
-        WeatherRecord record2   = new WeatherRecord(3, 30, 30, 30);
-        weatherRecordService.insert(record2);
+        WeatherRecord record4   = new WeatherRecord(city1.getId(), 20, 20, 20);
+        weatherRecordService.create(record4);
+        WeatherRecord record    = new WeatherRecord(city2.getId(), 20, 20, 20);
+        weatherRecordService.create(record);
+        WeatherRecord record2   = new WeatherRecord(city2.getId(), 30, 30, 30);
+        weatherRecordService.create(record2);
 
         List<CityWithLatestWeatherRecord> cityWithLatestWeatherRecords
-            = weatherRecordService.getCitiesWithLatestWeatherForState(1);
+            = weatherRecordService.getCitiesWithLatestWeatherForState(state.getId());
 
         assertTrue("Should be more than zero", cityWithLatestWeatherRecords.size() > 0);
-        assertTrue("Should be latest temp", cityWithLatestWeatherRecords.get(1).getTemperature() == record2.getTemperature());
+
+        CityWithLatestWeatherRecord cityWithLatestWeatherRecord = null;
+        for (CityWithLatestWeatherRecord item:
+             cityWithLatestWeatherRecords) {
+            if(item.getCity().getName().equals(city2.getName())) {
+                cityWithLatestWeatherRecord = item;
+            }
+        }
+
+        assertNotNull(cityWithLatestWeatherRecord);
+        assertEquals("temp should be same", (int)record2.getTemperature(), (int)cityWithLatestWeatherRecord.getTemperature());
+    }
+
+    @Test
+    public void testGetCityWithLatestWeather() {
+        State state = new State("Czech Republic");
+        stateService.create(state);
+
+        City city2 = cityService.create(new City("Liberec", state));
+
+        WeatherRecord record    = new WeatherRecord(city2.getId(), 20, 20, 20);
+        weatherRecordService.create(record);
+        WeatherRecord record2   = new WeatherRecord(city2.getId(), 30, 30, 30);
+        weatherRecordService.create(record2);
+
+        CityWithLatestWeatherRecord cityWithLatestWeatherRecord
+                = weatherRecordService.getLatestWeatherRecordForCity(city2.getId());
+
+        assertNotNull(cityWithLatestWeatherRecord);
+        assertEquals("Temp should be same", (int)record2.getTemperature(), (int)cityWithLatestWeatherRecord.getTemperature());
+    }
+
+    @Test
+    public void testGetAverageWeatherForCity() {
+        State state = new State("Czech Republic");
+        stateService.create(state);
+
+        City city2 = cityService.create(new City("Liberec", state));
+
+        WeatherRecord record    = new WeatherRecord(city2.getId(), 20, 20, 20);
+        weatherRecordService.create(record);
+        WeatherRecord record2   = new WeatherRecord(city2.getId(), 30, 30, 30);
+        weatherRecordService.create(record2);
+
+        CityWithWeatherAverages cityWithWeatherAverages
+                = weatherRecordService.getAverageWeatherForCity(city2.getId(), WeatherStatisticsInterval.TWO_WEEKS);
+
+        assertNotNull(cityWithWeatherAverages);
+        assertEquals("Temp should be same", 25, (int)cityWithWeatherAverages.getTemperature());
     }
 
     @Before
