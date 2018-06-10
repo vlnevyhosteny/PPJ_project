@@ -2,24 +2,33 @@ package ppj.weather.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.GeneratedValue;
 
-@Document(collection = "weatherRecords")
+@Document(collection = WeatherRecord.COLLECTION_NAME)
 public class WeatherRecord {
+
+    public static final String COLLECTION_NAME = "weatherRecords";
+    public static final String HUMIDITY_NAME = "humidity";
+    public static final String TEMPERATURE_NAME = "temperature";
+    public static final String PRECIPITATION_NAME = "precipitation";
+    public static final String DATE_NAME = "date";
+    public static final String CITY_ID_NAME = "cityId";
+    public static final String ID_NAME = "id";
 
     @Id
     @GeneratedValue
     private String id;
 
+    @JsonIgnore
     private City city;
 
     private int cityId;
 
     private Date date;
-
 
     private double temperature;
 

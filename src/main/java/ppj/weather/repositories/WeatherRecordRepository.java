@@ -7,4 +7,6 @@ public interface WeatherRecordRepository extends MongoRepository<WeatherRecord, 
 
     WeatherRecord findFirstByCityIdOrderByIdDesc(int city_id);
 
+    Boolean existsByCity_Id(int city_id);
+
 }

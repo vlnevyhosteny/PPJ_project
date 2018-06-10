@@ -4,6 +4,8 @@ import ppj.weather.model.City;
 import ppj.weather.model.State;
 
 import ppj.weather.model.WeatherRecord;
+import ppj.weather.model.joins.CityWithLatestWeatherRecord;
+import ppj.weather.model.joins.CityWithWeatherAverages;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -68,4 +70,19 @@ public interface ServerApi {
 
     @PUT(WEATHER_RECORD_PATH)
     Call<WeatherRecord> updateWeatherRecord(@Body WeatherRecord state);
+
+
+    public static final String WEATHER_STATISTICS_PATH = WEATHER_PATH + "/statistics";
+    public static final String AVERAGE_CITY_WEATHER_PATH = WEATHER_STATISTICS_PATH + "/average/{id_city}";
+    public static final String LATEST_CITY_WEATHER_PATH = WEATHER_STATISTICS_PATH + "/latest/{id_city}";
+
+    @GET(LATEST_CITY_WEATHER_PATH)
+    Call<CityWithLatestWeatherRecord> getLatestWeatherForCity(@Path("id_city") int idCity);
+
+    @GET(AVERAGE_CITY_WEATHER_PATH)
+    Call<CityWithWeatherAverages> getAverageWeatherStatisticsDefault(@Path("id_city") int idCity);
+
+    @GET(AVERAGE_CITY_WEATHER_PATH)
+    Call<CityWithWeatherAverages> getAverageWeatherStatisticsInInterval(@Path("id_city") int idCity
+            , @Query("interval") String interval);
 }
