@@ -1,11 +1,13 @@
 package ppj.weather.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.JoinColumnOrFormula;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "cities")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class City {
 
     @Id

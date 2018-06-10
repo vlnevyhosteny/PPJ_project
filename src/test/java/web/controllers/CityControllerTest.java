@@ -53,15 +53,10 @@ public class CityControllerTest {
     private City city3   = new City("New York", state2);
     private City city4   = new City("Cape Town", state3);
 
-    @Before
-    public final void setUp() {
-        stateService.create(state1);
-        stateService.create(state2);
-        stateService.create(state3);
-    }
-
     @Test
     public void testCreateCity() throws IOException {
+        createStates();
+
         int previousCount = cityService.getCitiesCount();
 
         Response<City> response = restService.addCity(city1).execute();
@@ -75,6 +70,7 @@ public class CityControllerTest {
 
     @Test
     public void testDeleteCity() throws IOException {
+        createStates();
         cityService.create(city1);
 
         restService.deleteState(state1.getId()).execute();
@@ -86,20 +82,22 @@ public class CityControllerTest {
 
     @Test
     public void testUpdateCity() throws IOException {
+        createStates();
         cityService.create(city1);
 
         City toUpdate = cityService.get(city1.getId()).get();
-        state1.setName("UK");
+        city1.setName("Liberek");
 
         Response<City> updated = restService.updateCity(city1).execute();
         assertNotNull("Response should not be null.", updated);
 
         City result = cityService.get(city1.getId()).get();
-        assertEquals("Name should be updated","UK",result.getName());
+        assertEquals("Name should be updated","Liberek",result.getName());
     }
 
     @Test
     public void testGetCities() throws IOException {
+        createStates();
         cityService.create(city1);
         cityService.create(city2);
         cityService.create(city3);
@@ -116,6 +114,7 @@ public class CityControllerTest {
 
     @Test
     public void testGetCity() throws IOException {
+        createStates();
         cityService.create(city1);
         cityService.create(city2);
         cityService.create(city3);
@@ -124,5 +123,11 @@ public class CityControllerTest {
 
         assertNotNull("Response shoul not be null", response);
         assertTrue("City1 should be present", response.body().getId() == city1.getId());
+    }
+
+    private void createStates() {
+        stateService.create(state1);
+        stateService.create(state2);
+        stateService.create(state3);
     }
 }

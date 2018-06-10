@@ -146,6 +146,11 @@ public class CityServiceTest {
 
     @Test
     public void testGetCitiesCount() {
+        stateService.create(state1);
+        stateService.create(state2);
+        stateService.create(state3);
+        stateService.create(state4);
+
         cityService.save(city1);
         cityService.save(city2);
         cityService.save(city3);
