@@ -101,7 +101,7 @@ public class WeatherRecordControllerTest {
         assertNotNull("Response should not be null.", updated);
 
         WeatherRecord result = weatherRecordService.get(record.getId()).get();
-        assertEquals("Name should be updated","30", result.getTemperature());
+        assertEquals("Temp should be updated","30", (int)result.getTemperature() + "");
     }
 
     @Test
@@ -122,8 +122,8 @@ public class WeatherRecordControllerTest {
 
         assertNotNull("Response shoul not be null", response);
         assertEquals("Count should be the same", count, response.body().size());
-        assertTrue("Record4 should be present", response.body().get((response.body().size() - 1)).getId()
-                == record4.getId());
+        assertEquals("Record4 should be present", response.body().get((response.body().size() - 1)).getId()
+                , record4.getId());
     }
 
     @Test
@@ -135,7 +135,7 @@ public class WeatherRecordControllerTest {
         Response<WeatherRecord> response = restService.getWeatherRecord(record.getId()).execute();
 
         assertNotNull("Response shoul not be null", response);
-        assertTrue("City1 should be present", response.body().getId() == record.getId());
+        assertEquals("City1 should be present", response.body().getId(), record.getId());
     }
 
     private void createStatesAndCities() {

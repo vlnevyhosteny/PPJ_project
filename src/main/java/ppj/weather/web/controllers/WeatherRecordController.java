@@ -30,7 +30,7 @@ public class WeatherRecordController {
 
     @RequestMapping(value = ServerApi.WEATHER_RECORDS_PATH, method = RequestMethod.POST)
     public ResponseEntity<WeatherRecord> createWeatherRecord(@RequestBody WeatherRecord weatherRecord) {
-        if(weatherRecordService.exists(weatherRecord.getId())) {
+        if(weatherRecord.getId() != null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
             weatherRecordService.create(weatherRecord);

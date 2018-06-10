@@ -52,7 +52,7 @@ public interface ServerApi {
     public static final String WEATHER_PATH = "/weather";
 
     public static final String WEATHER_RECORDS_PATH = WEATHER_PATH + "/records";
-    public static final String WEATHER_RECORD_PATH = WEATHER_PATH + "/record";
+    public static final String WEATHER_RECORD_PATH = WEATHER_PATH + "/record/{id}";
 
     @GET(WEATHER_RECORDS_PATH)
     Call<List<WeatherRecord>> showWeatherRecords();
