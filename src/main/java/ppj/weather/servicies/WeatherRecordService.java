@@ -118,25 +118,25 @@ public class WeatherRecordService {
             return null;
         }
 
-        if(repository.existsByCity_Id(idCity) == false) {
+        if(repository.findFirstByCityIdOrderByIdDesc(idCity) == null) {
             return null;
         }
 
         Date dateRange = WeatherStatisticsIntervalExtensions.getDateRangeFromNowByInterval(interval);
 
         GroupOperation groupOperation = Aggregation.group()
-                .avg(WeatherRecord.HUMIDITY_NAME).as(CityWithWeatherAverages.HUMIDITY_AVERAGE_NAME)
-                .avg(WeatherRecord.PRECIPITATION_NAME).as(CityWithWeatherAverages.PRECIPITATION_AVERAGE_NAME)
-                .avg(WeatherRecord.TEMPERATURE_NAME).as(CityWithWeatherAverages.TEMPERATURE_AVERAGE_NAME);
+                .avg(WeatherRecord.HUMIDITY_NAME).as(CityWithWeatherAverages.HUMIDITY_NAME)
+                .avg(WeatherRecord.PRECIPITATION_NAME).as(CityWithWeatherAverages.PRECIPITATION_NAME)
+                .avg(WeatherRecord.TEMPERATURE_NAME).as(CityWithWeatherAverages.TEMPERATURE_NAME);
 
         MatchOperation matchOperation = Aggregation.match(new Criteria(WeatherRecord.DATE_NAME)
                                                                 .gt(dateRange)
                                                                 .and(WeatherRecord.CITY_ID_NAME)
                                                                 .is(idCity));
 
-        ProjectionOperation projectionOperation = Aggregation.project(CityWithWeatherAverages.HUMIDITY_AVERAGE_NAME,
-                                                                      CityWithWeatherAverages.PRECIPITATION_AVERAGE_NAME,
-                                                                      CityWithWeatherAverages.TEMPERATURE_AVERAGE_NAME);
+        ProjectionOperation projectionOperation = Aggregation.project(CityWithWeatherAverages.HUMIDITY_NAME,
+                                                                      CityWithWeatherAverages.PRECIPITATION_NAME,
+                                                                      CityWithWeatherAverages.TEMPERATURE_NAME);
 
         projectionOperation = projectionOperation.andExclude(WeatherRecord.ID_NAME);
 

@@ -13,6 +13,8 @@ import ppj.weather.model.City;
 import ppj.weather.model.State;
 import ppj.weather.model.WeatherRecord;
 import ppj.weather.model.joins.CityWithLatestWeatherRecord;
+import ppj.weather.model.joins.CityWithWeatherAverages;
+import ppj.weather.model.joins.WeatherStatisticsInterval;
 import ppj.weather.servicies.CityService;
 import ppj.weather.servicies.StateService;
 import ppj.weather.servicies.WeatherRecordService;
@@ -144,6 +146,44 @@ public class WeatherRecordServiceTest {
 
         assertNotNull(cityWithLatestWeatherRecord);
         assertEquals("temp should be same", (int)record2.getTemperature(), (int)cityWithLatestWeatherRecord.getTemperature());
+    }
+
+    @Test
+    public void testGetCityWithLatestWeather() {
+        State state = new State("Czech Republic");
+        stateService.create(state);
+
+        City city2 = cityService.create(new City("Liberec", state));
+
+        WeatherRecord record    = new WeatherRecord(city2.getId(), 20, 20, 20);
+        weatherRecordService.create(record);
+        WeatherRecord record2   = new WeatherRecord(city2.getId(), 30, 30, 30);
+        weatherRecordService.create(record2);
+
+        CityWithLatestWeatherRecord cityWithLatestWeatherRecord
+                = weatherRecordService.getLatestWeatherRecordForCity(city2.getId());
+
+        assertNotNull(cityWithLatestWeatherRecord);
+        assertEquals("Temp should be same", (int)record2.getTemperature(), (int)cityWithLatestWeatherRecord.getTemperature());
+    }
+
+    @Test
+    public void testGetAverageWeatherForCity() {
+        State state = new State("Czech Republic");
+        stateService.create(state);
+
+        City city2 = cityService.create(new City("Liberec", state));
+
+        WeatherRecord record    = new WeatherRecord(city2.getId(), 20, 20, 20);
+        weatherRecordService.create(record);
+        WeatherRecord record2   = new WeatherRecord(city2.getId(), 30, 30, 30);
+        weatherRecordService.create(record2);
+
+        CityWithWeatherAverages cityWithWeatherAverages
+                = weatherRecordService.getAverageWeatherForCity(city2.getId(), WeatherStatisticsInterval.TWO_WEEKS);
+
+        assertNotNull(cityWithWeatherAverages);
+        assertEquals("Temp should be same", 25, (int)cityWithWeatherAverages.getTemperature());
     }
 
     @Before

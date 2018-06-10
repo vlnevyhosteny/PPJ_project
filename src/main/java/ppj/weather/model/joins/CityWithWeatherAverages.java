@@ -6,10 +6,6 @@ import java.util.Date;
 
 public class CityWithWeatherAverages extends WeatherRecord {
 
-    public static final String HUMIDITY_AVERAGE_NAME = "humidityAverage";
-    public static final String TEMPERATURE_AVERAGE_NAME = "temperatureAverage";
-    public static final String PRECIPITATION_AVERAGE_NAME = "precipitationAverage";
-
     private WeatherStatisticsInterval weatherStatisticsInterval = WeatherStatisticsInterval.DAY;
 
     public CityWithWeatherAverages() {

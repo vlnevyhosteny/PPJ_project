@@ -17,7 +17,7 @@ public class WeatherRecord {
     public static final String PRECIPITATION_NAME = "precipitation";
     public static final String DATE_NAME = "date";
     public static final String CITY_ID_NAME = "cityId";
-    public static final String ID_NAME = "id";
+    public static final String ID_NAME = "_id";
 
     @Id
     @GeneratedValue
