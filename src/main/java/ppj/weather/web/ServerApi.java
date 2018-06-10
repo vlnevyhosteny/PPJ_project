@@ -1,5 +1,6 @@
 package ppj.weather.web;
 
+import ppj.weather.model.City;
 import ppj.weather.model.State;
 
 import retrofit2.Call;
@@ -27,4 +28,22 @@ public interface ServerApi {
     @PUT(STATE_PATH)
     Call<State> updateState(@Body State state);
 
+
+    public static final String CITIES_PATH = "/cities";
+    public static final String CITY_PATH  = CITIES_PATH + "/{id}";
+
+    @GET(CITIES_PATH)
+    Call<List<City>> showCities();
+
+    @POST(CITIES_PATH)
+    Call<City> addCity(@Body City state);
+
+    @GET(CITY_PATH)
+    Call<City> getCity(@Path("id") int id);
+
+    @DELETE(CITY_PATH)
+    Call<Void> deleteCity(@Path("id") int id);
+
+    @PUT(CITY_PATH)
+    Call<City> updateCity(@Body City state);
 }
