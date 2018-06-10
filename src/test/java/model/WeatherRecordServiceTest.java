@@ -139,7 +139,7 @@ public class WeatherRecordServiceTest {
         CityWithLatestWeatherRecord cityWithLatestWeatherRecord = null;
         for (CityWithLatestWeatherRecord item:
              cityWithLatestWeatherRecords) {
-            if(item.getCityName().equals(city2.getName())) {
+            if(item.getCity().getName().equals(city2.getName())) {
                 cityWithLatestWeatherRecord = item;
             }
         }

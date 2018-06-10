@@ -1,48 +1,22 @@
 package ppj.weather.model.joins;
 
+import org.springframework.data.mongodb.core.mapping.Field;
 import ppj.weather.model.City;
 import ppj.weather.model.WeatherRecord;
 
-public class CityWithLatestWeatherRecord {
-
-    private City city;
-
-    private WeatherRecord weatherRecord;
+public class CityWithLatestWeatherRecord extends WeatherRecord {
 
     public CityWithLatestWeatherRecord(City city, WeatherRecord weatherRecord) {
-        this.city = city;
-        this.weatherRecord = weatherRecord;
+        super.setCity(city);
+        super.setId(weatherRecord.getId());
+        super.setDate(weatherRecord.getDate());
+        super.setId(weatherRecord.getId());
+        super.setCityId(weatherRecord.getCityId());
+        super.setHumidity(weatherRecord.getHumidity());
+        super.setPrecipitation(weatherRecord.getPrecipitation());
+        super.setTemperature(weatherRecord.getTemperature());
     }
 
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
-    public WeatherRecord getWeatherRecord() {
-        return weatherRecord;
-    }
-
-    public void setWeatherRecord(WeatherRecord weatherRecord) {
-        this.weatherRecord = weatherRecord;
-    }
-
-    public String getCityName() {
-        return this.city.getName();
-    }
-
-    public double getTemperature() {
-        return weatherRecord.getTemperature();
-    }
-
-    public double getHumidity() {
-        return weatherRecord.getHumidity();
-    }
-
-    public double getPrecipitation() {
-        return weatherRecord.getPrecipitation();
+    public CityWithLatestWeatherRecord() {
     }
 }
