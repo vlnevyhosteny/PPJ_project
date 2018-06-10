@@ -96,6 +96,12 @@ public class WeatherStatisticsControllerTest {
 
         assertNotNull(cityWithWeatherAverages);
         assertEquals("Temp should be same", 25, (int)cityWithWeatherAverages.body().getTemperature());
+
+        Response<CityWithWeatherAverages> cityWithWeatherAverages1
+                = restService.getAverageWeatherStatisticsDefault(city2.getId()).execute();
+
+        assertNotNull(cityWithWeatherAverages1);
+        assertEquals("Temp should be same", 25, (int)cityWithWeatherAverages1.body().getTemperature());
     }
 
 }
