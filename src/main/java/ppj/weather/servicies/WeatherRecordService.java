@@ -33,11 +33,11 @@ public class WeatherRecordService {
         return repository.count();
     }
 
-    public WeatherRecord insert(WeatherRecord weatherRecord) {
+    public WeatherRecord create(WeatherRecord weatherRecord) {
         return repository.save(weatherRecord);
     }
 
-    public List<WeatherRecord> insert(List<WeatherRecord> weatherRecords) {
+    public List<WeatherRecord> create(List<WeatherRecord> weatherRecords) {
         return repository.saveAll(weatherRecords);
     }
 
@@ -53,7 +53,7 @@ public class WeatherRecordService {
         return repository.findById(id) ;
     }
 
-    public WeatherRecord update(WeatherRecord weatherRecord) {
+    public WeatherRecord save(WeatherRecord weatherRecord) {
         return repository.save(weatherRecord);
     }
 
@@ -78,5 +78,13 @@ public class WeatherRecordService {
 
     private WeatherRecord findLatestWeatherRecordForCity(int id) {
         return repository.findFirstByCityIdOrderByIdDesc(id);
+    }
+
+    public boolean exists(String id) {
+        return repository.existsById(id);
+    }
+
+    public int getWeatherRecordCount() {
+        return (int) repository.count();
     }
 }

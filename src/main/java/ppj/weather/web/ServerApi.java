@@ -3,6 +3,7 @@ package ppj.weather.web;
 import ppj.weather.model.City;
 import ppj.weather.model.State;
 
+import ppj.weather.model.WeatherRecord;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -46,4 +47,25 @@ public interface ServerApi {
 
     @PUT(CITY_PATH)
     Call<City> updateCity(@Body City state);
+
+
+    public static final String WEATHER_PATH = "/weather";
+
+    public static final String WEATHER_RECORDS_PATH = WEATHER_PATH + "/records";
+    public static final String WEATHER_RECORD_PATH = WEATHER_PATH + "/record";
+
+    @GET(WEATHER_RECORDS_PATH)
+    Call<List<WeatherRecord>> showWeatherRecords();
+
+    @POST(WEATHER_RECORDS_PATH)
+    Call<WeatherRecord> addWeatherRecord(@Body WeatherRecord state);
+
+    @GET(WEATHER_RECORD_PATH)
+    Call<WeatherRecord> getWeatherRecord(@Path("id") String id);
+
+    @DELETE(WEATHER_RECORD_PATH)
+    Call<Void> deleteWeatherRecord(@Path("id") String id);
+
+    @PUT(WEATHER_RECORD_PATH)
+    Call<WeatherRecord> updateWeatherRecord(@Body WeatherRecord state);
 }
