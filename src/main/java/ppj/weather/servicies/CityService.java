@@ -53,4 +53,9 @@ public class CityService {
     public int getCitiesCount() {
         return (int) cityRepository.count();
     }
+
+    public List<City> getAll() {
+        return StreamSupport.stream(cityRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+    }
 }
