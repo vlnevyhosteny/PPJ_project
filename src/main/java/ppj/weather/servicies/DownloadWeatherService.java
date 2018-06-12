@@ -1,6 +1,8 @@
 package ppj.weather.servicies;
 
 import com.jayway.jsonpath.JsonPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class DownloadWeatherService {
+
+    private static final Logger log = LoggerFactory.getLogger(DownloadWeatherService.class);
 
     private final static String CITY_PAR_NAME = "{CITY_NAME}";
 
@@ -54,7 +59,9 @@ public class DownloadWeatherService {
 
     private void startWeatherDownloadingScheduler() {
         weatherThreadPoolTaskScheduler.scheduleAtFixedRate(this::downloadWeatherForCities,
-                                                            weatherSourceConfig.getUpdateRate());
+                (weatherSourceConfig.getUpdateRate() * 1000));
+
+        System.out.println("down scheduled");
     }
 
     private void downloadWeatherForCities() {
@@ -85,6 +92,7 @@ public class DownloadWeatherService {
         weatherRecord.setTemperature(parseJsonNumber(JsonPath.read(rawResult, "$.main.temp")));
         weatherRecord.setHumidity(parseJsonNumber(JsonPath.read(rawResult, "$.main.humidity")));
         weatherRecord.setPrecipitation(parseJsonNumber(JsonPath.read(rawResult, "$.main.pressure")));
+        weatherRecord.setDate(new Date());
 
         return weatherRecord;
     }
