@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReadOnlyModeConfig {
 
-    public static class ReadOnlyModeEnabled implements Condition {
+/*    public static class ReadOnlyModeEnabled implements Condition {
 
         @Override
         public boolean matches(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata) {
@@ -24,6 +24,6 @@ public class ReadOnlyModeConfig {
             String property = conditionContext.getEnvironment().getProperty("app.read-only-mode");
             return !property.equals("true");
         }
-    }
+    }*/
 
 }
