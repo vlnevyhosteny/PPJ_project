@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ppj.weather.web.OnlyGetMethodInterceptor;
 
+
 @Conditional(ReadOnlyModeConfig.ReadOnlyModeEnabled.class)
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
