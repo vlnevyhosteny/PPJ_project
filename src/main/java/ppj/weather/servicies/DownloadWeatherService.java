@@ -20,9 +20,9 @@ import java.util.List;
 @Service
 public class DownloadWeatherService {
 
-    private final static String CITY_PAR_NAME = "${CITY_NAME}";
+    private final static String CITY_PAR_NAME = "{CITY_NAME}";
 
-    private final static String API_KEY_PAR_NAME = "${API_KEY}";
+    private final static String API_KEY_PAR_NAME = "{API_KEY}";
 
     private final static int CONN_TIMEOUT = 1000;
 
@@ -73,24 +73,35 @@ public class DownloadWeatherService {
 
             weatherRecordService.save(parsedResult);
         } catch (Exception ex) {
-            // TODO: log
+            System.out.println(ex.toString());
         }
     }
 
-    private WeatherRecord parseRawStringToWeatherRecord(String rawResult, City city) {
+    public WeatherRecord parseRawStringToWeatherRecord(String rawResult, City city) {
         WeatherRecord weatherRecord = new WeatherRecord();
 
         weatherRecord.setCity(city);
         weatherRecord.setCityId(city.getId());
-        weatherRecord.setTemperature(JsonPath.read(rawResult, "$.main.temp"));
-        weatherRecord.setTemperature(JsonPath.read(rawResult, "$.main.humidity"));
-        weatherRecord.setTemperature(JsonPath.read(rawResult, "$.main.pressure"));
+        weatherRecord.setTemperature(parseJsonNumber(JsonPath.read(rawResult, "$.main.temp")));
+        weatherRecord.setHumidity(parseJsonNumber(JsonPath.read(rawResult, "$.main.humidity")));
+        weatherRecord.setPrecipitation(parseJsonNumber(JsonPath.read(rawResult, "$.main.pressure")));
 
         return weatherRecord;
     }
 
+    private double parseJsonNumber(Object jsonNumber) {
+        if(jsonNumber instanceof Double) {
+            return  (double) jsonNumber;
+        } else if(jsonNumber instanceof Integer) {
+            return ((Integer) jsonNumber).doubleValue();
+        }
+
+        throw new IllegalArgumentException("Invalid number format: " + jsonNumber);
+    }
+
     public String downloadRawWeatherForCity(City city) throws IOException {
-        URL url = new URL(composeURLForCity(city));
+        String composedUrl = composeURLForCity(city);
+        URL url = new URL(composedUrl);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setConnectTimeout(CONN_TIMEOUT);
