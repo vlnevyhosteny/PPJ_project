@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ppj.weather.web.OnlyGetMethodInterceptor;
 
-@Conditional(ReadOnlyModeConfig.ReadOnlyModeEnabled.class)
+//@Conditional(ReadOnlyModeConfig.ReadOnlyModeEnabled.class)
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new OnlyGetMethodInterceptor());
+        //registry.addInterceptor(new OnlyGetMethodInterceptor());
     }
 
 }
