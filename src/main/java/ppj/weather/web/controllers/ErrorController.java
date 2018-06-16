@@ -21,7 +21,7 @@ public class ErrorController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
     protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request) {
-        log.error("Rest exception controller: ", ex);
+        log.error("Exception controller: ", ex);
 
         return handleExceptionInternal(ex, bodyOfResponse + "\n" + ex.getMessage(),
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);

@@ -61,7 +61,7 @@ public class DownloadWeatherService {
         weatherThreadPoolTaskScheduler.scheduleAtFixedRate(this::downloadWeatherForCities,
                 (weatherSourceConfig.getUpdateRate() * 1000));
 
-        System.out.println("down scheduled");
+        log.info("Downloading task is scheduled.");
     }
 
     private void downloadWeatherForCities() {
@@ -80,7 +80,7 @@ public class DownloadWeatherService {
 
             weatherRecordService.save(parsedResult);
         } catch (Exception ex) {
-            System.out.println(ex.toString());
+            log.error("Unable to download weather for city " + city.getId(), ex);
         }
     }
 
@@ -103,6 +103,8 @@ public class DownloadWeatherService {
         } else if(jsonNumber instanceof Integer) {
             return ((Integer) jsonNumber).doubleValue();
         }
+
+        log.error("Unable to parse " + jsonNumber + " to any number.");
 
         throw new IllegalArgumentException("Invalid number format: " + jsonNumber);
     }
