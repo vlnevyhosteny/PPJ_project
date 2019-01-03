@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
 import ppj.weather.Main;
@@ -30,11 +31,22 @@ public class DataExpirationConfig implements InitializingBean {
 
         log.info("Expiration of data is set to " + weatherDataConfig.getExpiration() + "s");
 
-            mongoTemplate.indexOps(WeatherRecord.COLLECTION_NAME)
-                    .ensureIndex(
-                            new Index().on(WeatherRecord.DATE_NAME, Sort.Direction.ASC)
-                                       .expire(weatherDataConfig.getExpiration())
-                    );
+        try {
+            setExpirationOnDateIndex();
+        } catch(Exception ex) {
+            mongoTemplate.indexOps(WeatherRecord.COLLECTION_NAME).dropIndex(WeatherRecord.DATE_NAME);
 
+            setExpirationOnDateIndex();
+        }
+
+    }
+
+    private void setExpirationOnDateIndex() {
+        mongoTemplate.indexOps(WeatherRecord.COLLECTION_NAME)
+                .ensureIndex(
+                        new Index().on(WeatherRecord.DATE_NAME, Sort.Direction.ASC)
+                                .expire(weatherDataConfig.getExpiration())
+                                .named(WeatherRecord.DATE_NAME)
+                );
     }
 }
